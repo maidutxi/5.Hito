@@ -220,6 +220,48 @@ public class VisualizadorFotos {
     }
 
 
+    // Método para eliminar un fotógrafo
+    private void deletePhotographer(int idFotografo) {
+        try {
+            Connection connection = (Connection) conexionBD.getConnection();
+            String sql = "DELETE FROM Fotografos WHERE IdFotografo = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, idFotografo);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    public HashMap<Integer, Integer> createVisitsMap() {
+        HashMap<Integer, Integer> visitsMap = new HashMap<>();
+
+
+
+
+        try {
+            Connection connection = (Connection) conexionBD.getConnection();
+            String sql = "SELECT IdFotografo, COUNT(*) AS Visitas FROM Fotografias GROUP BY IdFotografo";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+
+
+
+            while (resultSet.next()) {
+                int idFotografo = resultSet.getInt("IdFotografo");
+                int visitas = resultSet.getInt("Visitas");
+                visitsMap.put(idFotografo, visitas);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+        return visitsMap;
+    }
 
 
 
