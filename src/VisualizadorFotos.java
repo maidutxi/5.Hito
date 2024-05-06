@@ -1,3 +1,5 @@
+package src;
+
 import org.jdesktop.swingx.JXDatePicker;
 import org.mariadb.jdbc.Connection;
 import src.ConexionBD;
