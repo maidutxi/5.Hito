@@ -179,6 +179,19 @@ public class VisualizadorFotos {
         }
     }
 
+    // Método para eliminar una imagen
+    private void deleteImage(int idFoto) {
+        try {
+            Connection connection = (Connection) conexionBD.getConnection();
+            String sql = "DELETE FROM Fotografias WHERE IdFoto = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, idFoto);
+            statement.executeUpdate();
+            statement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 
 
 
