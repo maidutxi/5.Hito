@@ -1,3 +1,5 @@
+import org.jdesktop.swingx.JXDatePicker;
+import org.mariadb.jdbc.Connection;
 import src.ConexionBD;
 import src.Fotografia;
 import src.Fotografo;
@@ -8,8 +10,10 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
 
-public class VisualizadorFotos {
+
+public class VisualizadorFotos extends JFrame{
     private ConexionBD conexionBD;
     private JComboBox<Fotografo> comboBoxFotografos;
     private JLabel labelFotografo;
@@ -102,7 +106,7 @@ public class VisualizadorFotos {
     // Método para cargar las fotos del fotógrafo seleccionado desde la fecha indicada en el JXDatePicker
     private void cargarFotos() {
         Fotografo fotografoSeleccionado = (Fotografo) comboBoxFotografos.getSelectedItem();
-        Date fechaSeleccionada = datePicker.getDate();
+        Date fechaSeleccionada = (Date) datePicker.getDate();
 
 
 
@@ -303,8 +307,5 @@ public class VisualizadorFotos {
             e.printStackTrace();
         }
     }
-
-
-
 
 }
