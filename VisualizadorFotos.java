@@ -4,6 +4,7 @@ import src.Fotografo;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -140,5 +141,13 @@ public class VisualizadorFotos {
             JOptionPane.showMessageDialog(this, "Error al cargar las fotos", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
+
+    // Método para cerrar la conexión a la base de datos
+    public void cerrarConexion() {
+        conexionBD.cerrarConexion();
+    }
+
+
+
 
 }
