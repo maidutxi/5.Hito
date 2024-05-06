@@ -147,6 +147,41 @@ public class VisualizadorFotos {
         conexionBD.cerrarConexion();
     }
 
+    // Método para eliminar imágenes no mostradas de fotógrafos no premiados
+    private void removeUnshownImages() {
+        try {
+            Connection connection = (Connection) conexionBD.getConnection();
+            String sql = "SELECT Fotografias.IdFoto, Fotografias.Titulo FROM Fotografias " +
+                    "INNER JOIN Fotografos ON Fotografias.IdFotografo = Fotografos.IdFotografo " +
+                    "WHERE Fotografias.Mostrada = false AND Fotografos.Premiado = false";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+
+
+
+            while (resultSet.next()) {
+                int idFoto = resultSet.getInt("IdFoto");
+                String titulo = resultSet.getString("Titulo");
+                int opcion = JOptionPane.showConfirmDialog(null, "¿Desea eliminar la imagen \"" + titulo + "\"?", "Eliminar Imagen", JOptionPane.YES_NO_OPTION);
+                if (opcion == JOptionPane.YES_OPTION) {
+                    deleteImage(idFoto);
+                }
+            }
+
+
+
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+
+
+
 
 
 
