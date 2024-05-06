@@ -15,8 +15,6 @@ public class VisualizadorFotos {
     private JLabel labelImagen;
 
 
-
-
     public VisualizadorFotos() {
         setTitle("Visualizador de Fotos");
         setSize(600, 400);
@@ -28,14 +26,10 @@ public class VisualizadorFotos {
         JButton btnRemove = new JButton("REMOVE");
 
 
-
-
         // Ajustar tamaño de los botones
         Dimension buttonSize = new Dimension(getWidth() / 2, 60); // La mitad del ancho de la ventana
         btnAward.setPreferredSize(buttonSize);
         btnRemove.setPreferredSize(buttonSize);
-
-
 
 
         panelBotones.add(btnAward, BorderLayout.WEST); // Añadir AWARD a la izquierda
@@ -43,13 +37,9 @@ public class VisualizadorFotos {
         add(panelBotones, BorderLayout.NORTH); // Agregar el panel de botones en la parte superior
 
 
-
-
         // Panel central para los componentes principales
         JPanel panelPrincipal = new JPanel(new GridLayout(2, 2));
         add(panelPrincipal, BorderLayout.CENTER);
-
-
 
 
         comboBoxFotografos = new JComboBox<>();
@@ -60,19 +50,13 @@ public class VisualizadorFotos {
         labelImagen = new JLabel();
 
 
-
-
         comboBoxFotografos.setPreferredSize(labelFotografo.getPreferredSize());
         datePicker.setFormats("dd/MM/yyyy");
         datePicker.setLightWeightPopupEnabled(true);
 
 
-
-
         JPanel panelComboBox = new JPanel(new FlowLayout(FlowLayout.LEFT));
         JPanel panelDatePicker = new JPanel(new FlowLayout(FlowLayout.LEFT));
-
-
 
 
         panelComboBox.add(labelFotografo);
@@ -81,11 +65,33 @@ public class VisualizadorFotos {
         panelDatePicker.add(datePicker);
 
 
-
-
         panelPrincipal.add(panelComboBox);
         panelPrincipal.add(panelDatePicker);
         panelPrincipal.add(new JScrollPane(listFotos));
         panelPrincipal.add(labelImagen);
 
     }
+
+    // Método para cargar los fotógrafos desde la base de datos
+    private void cargarFotografos() {
+        try {
+            PreparedStatement stmt = conexionBD.getConnection().prepareStatement("SELECT * FROM Fotografos");
+            ResultSet rs = stmt.executeQuery();
+
+
+            while (rs.next()) {
+                int id = rs.getInt("IdFotografo");
+                String nombre = rs.getString("Nombre");
+                boolean premiado = rs.getBoolean("Premiado");
+                comboBoxFotografos.addItem(new Fotografo(id, nombre, premiado));
+            }
+
+
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al cargar los fotógrafos", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+}
