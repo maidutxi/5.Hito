@@ -193,6 +193,31 @@ public class VisualizadorFotos {
         }
     }
 
+    // Método para eliminar fotógrafos que no tienen fotografías
+    private void removePhotographersWithoutImages() {
+        try {
+            Connection connection = (Connection) conexionBD.getConnection();
+            String sql = "SELECT IdFotografo FROM Fotografos WHERE IdFotografo NOT IN (SELECT DISTINCT IdFotografo FROM Fotografias)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet resultSet = statement.executeQuery();
+
+
+
+
+            while (resultSet.next()) {
+                int idFotografo = resultSet.getInt("IdFotografo");
+                deletePhotographer(idFotografo);
+            }
+
+
+
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
 
 
 
