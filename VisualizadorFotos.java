@@ -263,6 +263,48 @@ public class VisualizadorFotos {
         return visitsMap;
     }
 
+    // Método para marcar como premiados a los fotógrafos con un mínimo de N visitas
+    public void markPhotographersAsAwarded(int minimumVisits) {
+        try {
+            Connection connection = (Connection) conexionBD.getConnection();
+            String sqlSelect = "SELECT IdFotografo, COUNT(*) AS Visitas FROM Fotografias GROUP BY IdFotografo";
+            PreparedStatement statement = connection.prepareStatement(sqlSelect);
+            ResultSet resultSet = statement.executeQuery();
+
+
+
+
+            String sqlUpdate = "UPDATE Fotografos SET Premiado = true WHERE IdFotografo = ?";
+            PreparedStatement updateStatement = connection.prepareStatement(sqlUpdate);
+
+
+
+
+            while (resultSet.next()) {
+                int idFotografo = resultSet.getInt("IdFotografo");
+                int visitas = resultSet.getInt("Visitas");
+
+
+
+
+                if (visitas >= minimumVisits) {
+                    updateStatement.setInt(1, idFotografo);
+                    updateStatement.executeUpdate();
+                }
+            }
+
+
+
+
+            updateStatement.close();
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
 }
